@@ -1,32 +1,54 @@
 package LoginTests;
 
-import Shared.SharedChromeDriver;
-import TestCases.LoginTestCases.LoginValidUser;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import TestCases.LoginTestCases.LoginUser;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-import static Shared.SharedChromeDriver.chromeDriver;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest {
+    static String userName;
+    static String password;
+    final private String chromeDriverPath = "D:\\Codecool\\chromedriver.exe";
+    WebDriver driver;
+
+    @BeforeAll
+    public static void setUp(){
+        userName = System.getenv("correctUserName");
+        password = System.getenv("correctPassword");
+
+    }
 
     @BeforeEach
     public void init(){
-        SharedChromeDriver.openBrowser();
+
     }
 
     @Test
     public void LoginValidUser_SuccessfulLogin(){
-        LoginValidUser loginValidUser = new LoginValidUser();
-        String userName = System.getenv("correctUserName");
-        String password = System.getenv("correctPassword");
+        driver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        driver.manage().window().maximize();
+        LoginUser loginValidUser = new LoginUser(driver);
         boolean result = loginValidUser.loginValidUserTestCase(userName, password);
         assertTrue(result);
     }
 
+    @Test
+    public void LoginWithIncorrectPassword_LoginDenied(){
+        driver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        driver.manage().window().maximize();
+        LoginUser loginValidUser = new LoginUser(driver);
+        String incorrectPassword = "z";
+        boolean result = loginValidUser.loginValidUserTestCase("userName", incorrectPassword);
+        assertFalse(result);
+    }
+
     @AfterEach
-    public void tearDown() {
-        SharedChromeDriver.closeBrowser();
+    public void tearDown(){
+        driver.close();
     }
 }
