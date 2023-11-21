@@ -1,6 +1,8 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -68,11 +70,25 @@ public class JiraCreateIssueTest {
                 .addRemainingEstimate(remainingEstimate);
 
         createIssueDialog.clickCreateIssueButton();
-        mainPage.waitForSuccessMessage();
+        String successMessage = mainPage.getSuccessMessage();
+
+        logger.info("Test step: Verifying that the success message is not null");
+        Assertions.assertNotNull(successMessage, "Success message is null");
+
+        logger.info("Test step: Verifying that the success message contains 'successfully created'");
+        Assertions.assertTrue(successMessage.contains("successfully created"), "The issue was not created successfully");
+
+        logger.info("Test data: Project={}, IssueType={}, Summary={}", project, issueType, summary);
+    }
+    @AfterEach
+    public void afterEach(){
+        logger.info("Test scenario was ended");
     }
 
     @AfterAll
     public static void tearDown() {
+        logger.info("Web driver now closing");
         WebDriverSetup.closeDriver();
+        logger.info("Web driver closed");
     }
 }
