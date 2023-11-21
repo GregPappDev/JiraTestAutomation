@@ -9,8 +9,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
 import pages.JiraCreateIssueDialog;
-import pages.JiraLoginPage;
 import pages.JiraMainPage;
+import utilities.LoginHandler;
 import utilities.PropertyLoader;
 import utilities.WebDriverSetup;
 
@@ -19,34 +19,28 @@ import java.util.Properties;
 
 public class JiraCreateIssueTest {
     private static WebDriver driver;
-    private static Logger logger = LogManager.getLogger(JiraCreateIssueTest.class);
-    private static Properties testProperties;
-    private static JiraLoginPage loginPage;
+    private static final Duration waitTimeout = Duration.ofSeconds(5);
+    private static final Logger logger = LogManager.getLogger(JiraCreateIssueTest.class);
     private static JiraMainPage mainPage;
     private static JiraCreateIssueDialog createIssueDialog;
 
 
-
     @BeforeAll
     public static void setUp() {
+        Properties testProperties = PropertyLoader.loadProperties();
         driver = WebDriverSetup.getDriver();
-        driver.get("https://jira-auto.codecool.metastage.net/secure/Dashboard.jspa");
-        Duration waitTimeout = Duration.ofSeconds(5);
-        testProperties = PropertyLoader.loadProperties();
+        driver.get(testProperties.getProperty("URL"));
 
         logger.info("Setting up the test with wait timeout: " + waitTimeout.getSeconds() + " seconds");
 
-        loginPage = new JiraLoginPage(driver);
-        mainPage = new JiraMainPage(driver, waitTimeout);
-        createIssueDialog = new JiraCreateIssueDialog(driver, waitTimeout);
-
-        loginPage.enterUserName(testProperties.getProperty("jira.username"));
-        loginPage.enterPassword(testProperties.getProperty("jira.password"));
-        loginPage.clickLoginButton();
+        LoginHandler loginHandler = new LoginHandler(driver, testProperties);
+        loginHandler.performLogin();
     }
 
     @BeforeEach
     public void beforeEach() {
+        mainPage = new JiraMainPage(driver, waitTimeout);
+        createIssueDialog = new JiraCreateIssueDialog(driver, waitTimeout);
         mainPage.clickCreateButton();
     }
 
@@ -55,6 +49,8 @@ public class JiraCreateIssueTest {
     public void testCreateIssue(
             String project, String issueType, String summary, String description,
             String dueDate, String priority, String label, String originalEstimate, String remainingEstimate) {
+
+        logger.info("Test data: Project={}, IssueType={}, Summary={}", project, issueType, summary);
 
         createIssueDialog
                 .selectProject(project)
@@ -67,9 +63,9 @@ public class JiraCreateIssueTest {
                 .selectPriority(priority)
                 .addLabel(label)
                 .addOriginalEstimate(originalEstimate)
-                .addRemainingEstimate(remainingEstimate);
+                .addRemainingEstimate(remainingEstimate)
+                .clickCreateIssueButton();
 
-        createIssueDialog.clickCreateIssueButton();
         String successMessage = mainPage.getSuccessMessage();
 
         logger.info("Test step: Verifying that the success message is not null");
@@ -77,8 +73,6 @@ public class JiraCreateIssueTest {
 
         logger.info("Test step: Verifying that the success message contains 'successfully created'");
         Assertions.assertTrue(successMessage.contains("successfully created"), "The issue was not created successfully");
-
-        logger.info("Test data: Project={}, IssueType={}, Summary={}", project, issueType, summary);
     }
     @AfterEach
     public void afterEach(){
