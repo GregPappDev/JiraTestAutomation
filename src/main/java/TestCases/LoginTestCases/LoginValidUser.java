@@ -1,40 +1,38 @@
 package TestCases.LoginTestCases;
 
-import TestCases.SharedChromeDriver;
-import pages.LoginPage;
+import Shared.SharedChromeDriver;
+import Pages.LoginPage;
 
 import java.time.Duration;
 
-import static TestCases.SharedChromeDriver.driver;
+import static Shared.SharedChromeDriver.chromeDriver;
 
 public class LoginValidUser {
-    private LoginPage loginPage = new LoginPage();
-    private String expectedPageTitle = "System Dashboard - Jira Auto";
+    final private LoginPage loginPage = new LoginPage();
+    final private String expectedPageTitle = "System Dashboard - Jira Auto";
 
     public boolean loginValidUserTestCase(){
-        SharedChromeDriver.openBrowser();
         navigateToUrl();
         fillInUserName();
         fillInPassword();
         clickSubmitButton();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        System.out.println(driver.getTitle());
-        return driver.getTitle().equals(expectedPageTitle);
+        chromeDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        return chromeDriver.getTitle().equals(expectedPageTitle);
     }
 
     private void navigateToUrl(){
-        driver.get(loginPage.getUrl());
+        chromeDriver.get(loginPage.getUrl());
     }
     private void fillInUserName(){
-        driver.findElement(loginPage.getUserNameInputField())
+        chromeDriver.findElement(loginPage.getUserNameInputField())
                 .sendKeys("automation60");
     }
     private void fillInPassword(){
-        driver.findElement(loginPage.getPasswordInputField())
+        chromeDriver.findElement(loginPage.getPasswordInputField())
                 .sendKeys("CCAutoTest19.");
     }
     private void clickSubmitButton(){
-        driver.findElement(loginPage.getLoginButton()).click();
+        chromeDriver.findElement(loginPage.getLoginButton()).click();
     }
 
 }

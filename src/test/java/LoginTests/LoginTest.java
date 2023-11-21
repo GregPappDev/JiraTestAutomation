@@ -1,13 +1,20 @@
 package LoginTests;
 
+import Shared.SharedChromeDriver;
 import TestCases.LoginTestCases.LoginValidUser;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static TestCases.SharedChromeDriver.driver;
+import static Shared.SharedChromeDriver.chromeDriver;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest {
+
+    @BeforeEach
+    public void init(){
+        SharedChromeDriver.openBrowser();
+    }
 
     @Test
     public void LoginValidUser_SuccessfulLogin(){
@@ -16,8 +23,8 @@ public class LoginTest {
         assertTrue(result);
     }
 
-    @AfterAll
-    static public void tearDown() {
-        driver.close();
+    @AfterEach
+    public void tearDown() {
+        SharedChromeDriver.closeBrowser();
     }
 }
