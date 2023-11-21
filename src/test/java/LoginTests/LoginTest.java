@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTest {
-    static String userName;
-    static String password;
+    private static String userName;
+    private static String password;
     final private String chromeDriverPath = "D:\\Codecool\\chromedriver.exe";
-    WebDriver driver;
+    private WebDriver driver;
 
     @BeforeAll
     public static void setUp(){
