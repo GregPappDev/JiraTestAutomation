@@ -18,6 +18,7 @@ public class JiraMainPage {
 
     private By createButton = By.id("create_link");
     private By successMessage = By.className("aui-message-success");
+    private By successMessageCloseButton = By.className("aui-close-button");
 
     public JiraMainPage(WebDriver driver, Duration waitTimeout) {
         this.driver = driver;
@@ -34,11 +35,18 @@ public class JiraMainPage {
         }
     }
 
-    public String waitForSuccessMessage() {
+    public String getSuccessMessage() {
         try {
+            WebElement closeButton = wait.until(ExpectedConditions.elementToBeClickable(successMessageCloseButton));
             WebElement successMessageElement = wait.until(ExpectedConditions.presenceOfElementLocated(successMessage));
             String successMessageText = successMessageElement.getText();
+            closeButton.click();
+
             logger.info("Success Message: " + successMessageText);
+
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(successMessageCloseButton));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(successMessage));
+
             return successMessageText;
         } catch (WebDriverException e) {
             logger.error("Exception while waiting for success message: " + e.getMessage());
