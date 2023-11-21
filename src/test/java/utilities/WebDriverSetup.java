@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.Properties;
 
-public class WebdriverSetup {
+public class WebDriverSetup {
     private static WebDriver driver;
     private static Properties properties;
 
