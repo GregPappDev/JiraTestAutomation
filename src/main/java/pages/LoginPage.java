@@ -5,10 +5,10 @@ import org.openqa.selenium.WebDriver;
 
 public class LoginPage {
     protected WebDriver driver;
-    private String url = "https://jira-auto.codecool.metastage.net/secure/Dashboard.jspa";
-    private By userNameInputField  = By.id("login-form-username");
-    private By passwordInputField = By.id("login-form-password");
-    private By loginButton = By.id("login");
+    final private String url = "https://jira-auto.codecool.metastage.net/secure/Dashboard.jspa";
+    final private By userNameInputField  = By.id("login-form-username");
+    final private By passwordInputField = By.id("login-form-password");
+    final private By loginButton = By.id("login");
 
     public String getUrl() {
         return url;
