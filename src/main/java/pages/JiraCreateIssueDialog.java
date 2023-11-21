@@ -13,32 +13,30 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class JiraCreateIssueDialog {
-    private WebDriver driver;
-    private WebDriverWait wait;
-    private Logger logger = LogManager.getLogger(JiraCreateIssueDialog.class);
+    private final WebDriverWait wait;
+    private final Logger logger = LogManager.getLogger(JiraCreateIssueDialog.class);
 
-    private By projectField = By.id("project-field");
-    private By issueTypeField = By.id("issuetype-field");
-    private By summaryField = By.id("summary");
-    private By attachmentBrowseButton = By.id("attachment-browse-button");
-    private By duedateField = By.id("duedate");
-    private By duedateTrigger = By.id("duedate-trigger");
-    private By textModeButton = By.xpath("//li[@data-mode='source' and not(@class)]//button[text()='Text']");
-    private By descriptionDiv = By.id("description-wiki-edit");
-    private By descritionField = By.id("description");
-    private By assigneeField = By.id("assignee-field");
-    private By assignToMeTrigger = By.id("assign-to-me-trigger");
-    private By priorityField = By.id("priority-field");
-    private By labelTextarea = By.id("labels-textarea");
-    private By originalEstimate = By.id("timetracking_originalestimate");
-    private By remainingEstimate = By.id("timetracking_remainingestimate");
-    private By checkboxForCreateAnother = By.id("qf-create-another");
-    private By createButton = By.id("create-issue-submit");
-    private By cancelButton = By.xpath("//button[@type='button' and @accesskey='`' and @title='Press Alt+` to cancel' and contains(@class, 'cancel')]");
+    private final By projectField = By.id("project-field");
+    private final By issueTypeField = By.id("issuetype-field");
+    private final By summaryField = By.id("summary");
+    private final By attachmentBrowseButton = By.id("attachment-browse-button");
+    private final By duedateField = By.id("duedate");
+    private final By duedateTrigger = By.id("duedate-trigger");
+    private final By textModeButton = By.xpath("//li[@data-mode='source' and not(@class)]//button[text()='Text']");
+    private final By descriptionDiv = By.id("description-wiki-edit");
+    private final By descriptionField = By.id("description");
+    private final By assigneeField = By.id("assignee-field");
+    private final By assignToMeTrigger = By.id("assign-to-me-trigger");
+    private final By priorityField = By.id("priority-field");
+    private final By labelTextarea = By.id("labels-textarea");
+    private final By originalEstimate = By.id("timetracking_originalestimate");
+    private final By remainingEstimate = By.id("timetracking_remainingestimate");
+    private final By checkboxForCreateAnother = By.id("qf-create-another");
+    private final By createButton = By.id("create-issue-submit");
+    private final By cancelButton = By.xpath("//button[@type='button' and @accesskey='`' and @title='Press Alt+` to cancel' and contains(@class, 'cancel')]");
 
 
     public JiraCreateIssueDialog(WebDriver driver, Duration waitTimeout) {
-        this.driver = driver;
         this.wait = new WebDriverWait(driver, waitTimeout);
     }
 
@@ -125,7 +123,7 @@ public class JiraCreateIssueDialog {
         try {
             logger.info("Adding description: " + description);
             WebElement descriptionDivElement = wait.until(ExpectedConditions.visibilityOfElementLocated(descriptionDiv));
-            WebElement descriptionFieldElement = descriptionDivElement.findElement(descritionField);
+            WebElement descriptionFieldElement = descriptionDivElement.findElement(descriptionField);
             descriptionFieldElement.sendKeys(description);
         } catch (WebDriverException e){
             logger.error("Exception while adding description: " + e.getMessage());
@@ -216,7 +214,7 @@ public class JiraCreateIssueDialog {
         }
         return this;
     }
-    public JiraCreateIssueDialog clickCreateIssueButton(){
+    public void clickCreateIssueButton(){
         try {
             logger.info("Click on 'Create' issue submit button");
             WebElement createButtonElement = wait.until(ExpectedConditions.elementToBeClickable(createButton));
@@ -224,9 +222,8 @@ public class JiraCreateIssueDialog {
         } catch (WebDriverException e) {
             logger.error("Exception while clicking 'Create Issue' button: " + e.getMessage());
         }
-        return this;
     }
-    public JiraCreateIssueDialog clickOnCancel(){
+    public void clickOnCancel(){
         try {
             logger.info("Click on 'Cancel' button");
             WebElement cancelButtonElement = wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
@@ -234,6 +231,5 @@ public class JiraCreateIssueDialog {
         } catch (WebDriverException e) {
             logger.error("Exception while clicking 'Cancel' button: " + e.getMessage());
         }
-        return this;
     }
 }
