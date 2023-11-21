@@ -10,15 +10,15 @@ import java.util.concurrent.TimeUnit;
 
 
 
-public class LoginUser {
+public class LoginUserTestCase {
     final private LoginPage loginPage = new LoginPage();
     protected WebDriver driver;
 
-    public LoginUser(WebDriver driver) {
+    public LoginUserTestCase(WebDriver driver) {
         this.driver = driver;
     }
 
-    public boolean loginValidUserTestCase(String userName, String password){
+    public boolean loginUserTestCase(String userName, String password){
         navigateToUrl();
         fillInUserName(userName);
         fillInPassword(password);

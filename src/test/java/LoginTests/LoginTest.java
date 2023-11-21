@@ -1,6 +1,6 @@
 package LoginTests;
 
-import TestCases.LoginTestCases.LoginUser;
+import TestCases.LoginTestCases.LoginUserTestCase;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,27 +23,24 @@ public class LoginTest {
 
     @BeforeEach
     public void init(){
-
+        driver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
     }
 
     @Test
     public void LoginValidUser_SuccessfulLogin(){
-        driver = new ChromeDriver();
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         driver.manage().window().maximize();
-        LoginUser loginValidUser = new LoginUser(driver);
-        boolean result = loginValidUser.loginValidUserTestCase(userName, password);
+        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
+        boolean result = loginUser.loginUserTestCase(userName, password);
         assertTrue(result);
     }
 
     @Test
     public void LoginWithIncorrectPassword_LoginDenied(){
-        driver = new ChromeDriver();
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         driver.manage().window().maximize();
-        LoginUser loginValidUser = new LoginUser(driver);
+        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
         String incorrectPassword = "z";
-        boolean result = loginValidUser.loginValidUserTestCase("userName", incorrectPassword);
+        boolean result = loginUser.loginUserTestCase("userName", incorrectPassword);
         assertFalse(result);
     }
 
