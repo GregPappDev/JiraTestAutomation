@@ -19,32 +19,28 @@ import java.util.Properties;
 
 public class JiraCreateIssueTest {
     private static WebDriver driver;
-    private static Logger logger = LogManager.getLogger(JiraCreateIssueTest.class);
-    private static Properties testProperties;
+    private static final Duration waitTimeout = Duration.ofSeconds(5);
+    private static final Logger logger = LogManager.getLogger(JiraCreateIssueTest.class);
     private static JiraMainPage mainPage;
     private static JiraCreateIssueDialog createIssueDialog;
-    private static LoginHandler loginHandler;
-
 
 
     @BeforeAll
     public static void setUp() {
-        testProperties = PropertyLoader.loadProperties();
+        Properties testProperties = PropertyLoader.loadProperties();
         driver = WebDriverSetup.getDriver();
         driver.get(testProperties.getProperty("URL"));
-        Duration waitTimeout = Duration.ofSeconds(5);
 
         logger.info("Setting up the test with wait timeout: " + waitTimeout.getSeconds() + " seconds");
 
-        mainPage = new JiraMainPage(driver, waitTimeout);
-        createIssueDialog = new JiraCreateIssueDialog(driver, waitTimeout);
-
-        loginHandler = new LoginHandler(driver, testProperties);
+        LoginHandler loginHandler = new LoginHandler(driver, testProperties);
         loginHandler.performLogin();
     }
 
     @BeforeEach
     public void beforeEach() {
+        mainPage = new JiraMainPage(driver, waitTimeout);
+        createIssueDialog = new JiraCreateIssueDialog(driver, waitTimeout);
         mainPage.clickCreateButton();
     }
 
@@ -67,9 +63,9 @@ public class JiraCreateIssueTest {
                 .selectPriority(priority)
                 .addLabel(label)
                 .addOriginalEstimate(originalEstimate)
-                .addRemainingEstimate(remainingEstimate);
+                .addRemainingEstimate(remainingEstimate)
+                .clickCreateIssueButton();
 
-        createIssueDialog.clickCreateIssueButton();
         String successMessage = mainPage.getSuccessMessage();
 
         logger.info("Test step: Verifying that the success message is not null");
