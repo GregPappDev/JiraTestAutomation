@@ -11,10 +11,10 @@ public class LoginValidUser {
     final private LoginPage loginPage = new LoginPage();
     final private String expectedPageTitle = "System Dashboard - Jira Auto";
 
-    public boolean loginValidUserTestCase(){
+    public boolean loginValidUserTestCase(String userName, String password){
         navigateToUrl();
-        fillInUserName();
-        fillInPassword();
+        fillInUserName(userName);
+        fillInPassword(password);
         clickSubmitButton();
         chromeDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         return chromeDriver.getTitle().equals(expectedPageTitle);
@@ -23,13 +23,13 @@ public class LoginValidUser {
     private void navigateToUrl(){
         chromeDriver.get(loginPage.getUrl());
     }
-    private void fillInUserName(){
+    private void fillInUserName(String userName){
         chromeDriver.findElement(loginPage.getUserNameInputField())
-                .sendKeys("automation60");
+                .sendKeys(userName);
     }
-    private void fillInPassword(){
+    private void fillInPassword(String password){
         chromeDriver.findElement(loginPage.getPasswordInputField())
-                .sendKeys("CCAutoTest19.");
+                .sendKeys(password);
     }
     private void clickSubmitButton(){
         chromeDriver.findElement(loginPage.getLoginButton()).click();

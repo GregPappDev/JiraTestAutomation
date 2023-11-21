@@ -19,7 +19,9 @@ public class LoginTest {
     @Test
     public void LoginValidUser_SuccessfulLogin(){
         LoginValidUser loginValidUser = new LoginValidUser();
-        boolean result = loginValidUser.loginValidUserTestCase();
+        String userName = System.getenv("correctUserName");
+        String password = System.getenv("correctPassword");
+        boolean result = loginValidUser.loginValidUserTestCase(userName, password);
         assertTrue(result);
     }
 
