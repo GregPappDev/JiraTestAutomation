@@ -6,11 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.JiraCreateIssueDialog;
 import pages.JiraLoginPage;
 import pages.JiraMainPage;
 import utilities.PropertyLoader;
+import utilities.WebDriverSetup;
 
 import java.time.Duration;
 import java.util.Properties;
@@ -27,8 +27,7 @@ public class JiraCreateIssueTest {
 
     @BeforeAll
     public static void setUp() {
-        System.setProperty("web-driver.chrome.driver", "path/to/chromedriver");
-        driver = new ChromeDriver();
+        driver = WebDriverSetup.getDriver();
         driver.get("https://jira-auto.codecool.metastage.net/secure/Dashboard.jspa");
         Duration waitTimeout = Duration.ofSeconds(5);
         testProperties = PropertyLoader.loadProperties();
@@ -74,8 +73,6 @@ public class JiraCreateIssueTest {
 
     @AfterAll
     public static void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        WebDriverSetup.closeDriver();
     }
 }
