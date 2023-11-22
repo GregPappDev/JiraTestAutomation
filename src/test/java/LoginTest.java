@@ -60,7 +60,7 @@ public class LoginTest {
         String correctUserName = userName;
         String invalidPassword = "x";
 
-        boolean result = loginUser.multipleLoginTriesTestCase(correctUserName, invalidPassword, numberOfTries);
+        boolean result = loginUser.revealCaptcha(correctUserName, invalidPassword, numberOfTries);
         assertTrue(result);
     }
 
