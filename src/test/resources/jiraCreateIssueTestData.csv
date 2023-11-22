@@ -1,0 +1,5 @@
+project,issueType,summary,description,dueDate,priority,label,originalEstimate,remainingEstimate
+TOUCAN project (TOUCAN),Bug,Bug issue for test automation(have to delete),description,23/Nov/23,Lowest,TestIssue,1m,1m
+TOUCAN project (TOUCAN),Story,Story issue for test automation(have to delete),description,23/Nov/23,Low,TestIssue,2m,2m
+TOUCAN project (TOUCAN),Improvement,Improvement issue for test automation(have to delete),description,23/Nov/23,Medium,TestIssue,3m,3m
+TOUCAN project (TOUCAN),Task,Task issue for test automation(have to delete),description,23/Nov/23,High,TestIssue,4m,4m

@@ -1,0 +1,235 @@
+package pages;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+public class JiraCreateIssueDialog {
+    private final WebDriverWait wait;
+    private final Logger logger = LogManager.getLogger(JiraCreateIssueDialog.class);
+
+    private final By projectField = By.id("project-field");
+    private final By issueTypeField = By.id("issuetype-field");
+    private final By summaryField = By.id("summary");
+    private final By attachmentBrowseButton = By.id("attachment-browse-button");
+    private final By duedateField = By.id("duedate");
+    private final By duedateTrigger = By.id("duedate-trigger");
+    private final By textModeButton = By.xpath("//li[@data-mode='source' and not(@class)]//button[text()='Text']");
+    private final By descriptionDiv = By.id("description-wiki-edit");
+    private final By descriptionField = By.id("description");
+    private final By assigneeField = By.id("assignee-field");
+    private final By assignToMeTrigger = By.id("assign-to-me-trigger");
+    private final By priorityField = By.id("priority-field");
+    private final By labelTextarea = By.id("labels-textarea");
+    private final By originalEstimate = By.id("timetracking_originalestimate");
+    private final By remainingEstimate = By.id("timetracking_remainingestimate");
+    private final By checkboxForCreateAnother = By.id("qf-create-another");
+    private final By createButton = By.id("create-issue-submit");
+    private final By cancelButton = By.xpath("//button[@type='button' and @accesskey='`' and @title='Press Alt+` to cancel' and contains(@class, 'cancel')]");
+
+
+    public JiraCreateIssueDialog(WebDriver driver, Duration waitTimeout) {
+        this.wait = new WebDriverWait(driver, waitTimeout);
+    }
+
+    public JiraCreateIssueDialog selectProject(String project){
+        try {
+            logger.info("Select " + project + " project");
+            WebElement projectFieldElement = wait.until(ExpectedConditions.visibilityOfElementLocated(projectField));
+            projectFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            projectFieldElement.sendKeys(project);
+            projectFieldElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e) {
+            logger.error("Exception while selecting project: " + e.getMessage());
+        }
+        return this;
+    }
+    public JiraCreateIssueDialog selectIssueType(String issueType){
+        try {
+            logger.info("Select " + issueType + " issue type");
+            WebElement issueTypeFieldElement = wait.until(ExpectedConditions.elementToBeClickable(issueTypeField));
+            issueTypeFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            issueTypeFieldElement.sendKeys(issueType);
+            issueTypeFieldElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e) {
+            logger.error("Exception while selecting issue type: " + e.getMessage());
+        }
+        return this;
+    }
+    public JiraCreateIssueDialog addSummary(String summary){
+        try {
+            logger.info("Add " + summary + " into 'summary' field");
+            WebElement summaryFieldElement = wait.until(ExpectedConditions.elementToBeClickable(summaryField));
+            summaryFieldElement.click();
+            summaryFieldElement.sendKeys(summary);
+            summaryFieldElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e) {
+            logger.error("Exception while adding 'summary': " + e.getMessage());
+        }
+        return this;
+    }
+    public JiraCreateIssueDialog clickBrowseAttachment(){
+        try {
+            logger.info("Click on 'browse' link");
+            WebElement browseAttachmentElement = wait.until(ExpectedConditions.elementToBeClickable(attachmentBrowseButton));
+            browseAttachmentElement.click();
+        } catch (WebDriverException e){
+            logger.error("Exception while clicking 'browse' link: " + e.getMessage());
+        }
+        return this;
+    }
+    public JiraCreateIssueDialog clickDueDateTrigger(){
+        try {
+            logger.info("Clicking on 'Due Date Trigger'");
+            WebElement dueDateTriggerElement = wait.until(ExpectedConditions.elementToBeClickable(duedateTrigger));
+            dueDateTriggerElement.click();
+        } catch (WebDriverException e){
+            logger.error("Exception while clicking 'Due Date Trigger': " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog addDueDate(String dueDate){
+        try {
+            logger.info("Adding due date: " + dueDate);
+            WebElement dueDateFieldElement = wait.until(ExpectedConditions.visibilityOfElementLocated(duedateField));
+            dueDateFieldElement.sendKeys(dueDate);
+            dueDateFieldElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e){
+            logger.error("Exception while adding due date: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog setTextDescriptionMode(){
+        try {
+            logger.info("Setting text description mode");
+            WebElement textModeButtonElement = wait.until(ExpectedConditions.elementToBeClickable(textModeButton));
+            textModeButtonElement.click();
+        } catch (WebDriverException e){
+            logger.error("Exception while setting text description mode: " + e.getMessage());
+        }
+        return this;
+    }
+    public JiraCreateIssueDialog addDescription(String description){
+        try {
+            logger.info("Adding description: " + description);
+            WebElement descriptionDivElement = wait.until(ExpectedConditions.visibilityOfElementLocated(descriptionDiv));
+            WebElement descriptionFieldElement = descriptionDivElement.findElement(descriptionField);
+            descriptionFieldElement.sendKeys(description);
+        } catch (WebDriverException e){
+            logger.error("Exception while adding description: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog selectAssignee(String user){
+        try {
+            logger.info("Selecting assignee: " + user);
+            WebElement assigneeFieldElement = wait.until(ExpectedConditions.visibilityOfElementLocated(assigneeField));
+            assigneeFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            assigneeFieldElement.sendKeys(user);
+            assigneeFieldElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e){
+            logger.error("Exception while selecting assignee: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog assignToMe(){
+        try {
+            logger.info("Assigning to me");
+            WebElement assignToMeTriggerElement = wait.until(ExpectedConditions.elementToBeClickable(assignToMeTrigger));
+            assignToMeTriggerElement.click();
+        } catch (WebDriverException e){
+            logger.error("Exception while assigning to me: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog selectPriority(String level){
+        try {
+            logger.info("Selecting priority: " + level);
+            WebElement priorityFieldElement = wait.until(ExpectedConditions.visibilityOfElementLocated(priorityField));
+            priorityFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+            priorityFieldElement.sendKeys(level);
+            priorityFieldElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e){
+            logger.error("Exception while selecting priority: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog addLabel(String label){
+        try {
+            logger.info("Adding label: " + label);
+            WebElement labelTextareaElement = wait.until(ExpectedConditions.visibilityOfElementLocated(labelTextarea));
+            labelTextareaElement.sendKeys(label);
+            labelTextareaElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e){
+            logger.error("Exception while adding label: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog addOriginalEstimate(String time){
+        try {
+            logger.info("Adding original estimate: " + time);
+            WebElement originalEstimateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(originalEstimate));
+            originalEstimateElement.sendKeys(time);
+            originalEstimateElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e){
+            logger.error("Exception while adding original estimate: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog addRemainingEstimate(String time){
+        try {
+            logger.info("Adding remaining estimate: " + time);
+            WebElement remainingEstimateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(remainingEstimate));
+            remainingEstimateElement.sendKeys(time);
+            remainingEstimateElement.sendKeys(Keys.RETURN);
+        } catch (WebDriverException e){
+            logger.error("Exception while adding remaining estimate: " + e.getMessage());
+        }
+        return this;
+    }
+
+    public JiraCreateIssueDialog clickOnCreateAnother_Checkbox(){
+        try {
+            logger.info("Click on 'Create Another' checkbox");
+            WebElement createAnotherElement = wait.until(ExpectedConditions.elementToBeClickable(checkboxForCreateAnother));
+            createAnotherElement.click();
+        } catch (WebDriverException e){
+            logger.error("Exception while clicking 'Create Another' checkbox: " + e.getMessage());
+        }
+        return this;
+    }
+    public void clickCreateIssueButton(){
+        try {
+            logger.info("Click on 'Create' issue submit button");
+            WebElement createButtonElement = wait.until(ExpectedConditions.elementToBeClickable(createButton));
+            createButtonElement.click();
+        } catch (WebDriverException e) {
+            logger.error("Exception while clicking 'Create Issue' button: " + e.getMessage());
+        }
+    }
+    public void clickOnCancel(){
+        try {
+            logger.info("Click on 'Cancel' button");
+            WebElement cancelButtonElement = wait.until(ExpectedConditions.elementToBeClickable(cancelButton));
+            cancelButtonElement.click();
+        } catch (WebDriverException e) {
+            logger.error("Exception while clicking 'Cancel' button: " + e.getMessage());
+        }
+    }
+}
