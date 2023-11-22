@@ -37,6 +37,26 @@ public class LoginUserTestCase {
         return result.size() > 0;
     }
 
+    public boolean failCaptcha(String userName, String password){
+
+        WebElement userNameField = driver.findElement(By.id("login-form-username"));
+        userNameField.sendKeys(userName);
+        WebElement passwordField = driver.findElement(By.id("login-form-password"));
+        passwordField.sendKeys(password);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        WebElement captchaField = driver.findElement(By.id("login-form-captcha"));
+        captchaField.sendKeys("#######");
+
+        WebElement loginButton = driver.findElement(By.id("login"));
+        loginButton.click();
+
+        navigateToUrl();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        List<WebElement> result = driver.findElements(By.id("login-form-username"));
+        return result.size() > 0;
+    }
+
     private void navigateToUrl(){
         driver.get(loginPage.getUrl());
     }

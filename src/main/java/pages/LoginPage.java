@@ -9,6 +9,7 @@ public class LoginPage {
     final private By userNameInputField  = By.id("login-form-username");
     final private By passwordInputField = By.id("login-form-password");
     final private By loginButton = By.id("login");
+    final private By captchaField= By.id("login-form-captcha");
 
     public String getUrl() {
         return url;
@@ -24,4 +25,6 @@ public class LoginPage {
     public By getLoginButton() {
         return loginButton;
     }
+
+    public By getCaptchaField(){return captchaField;}
 }
