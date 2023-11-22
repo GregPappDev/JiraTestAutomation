@@ -1,3 +1,4 @@
 summary,issueType,dueDate,description,priority,label,originalEstimate,remainingEstimate,comment
-(edited),Story, 23/Nov/23, Edit test description, Lowest, UpdateTest, 1m, 1m, Automated update test 1
-(edited again),Bug, 23/Nov/23, Edit test description, Low, UpdateTest, 2m, 2m, Automated update test 2
+For Edt Test(edited),Story, 23/Nov/23, Edit test description, Lowest, UpdateTest, 1m, 1m, Automated update test 1
+For Edit Test(edited again),Bug, 23/Nov/23, Edit test description, Low, UpdateTest, 2m, 2m, Automated update test 2
+For Edit Test, Story, 23/Nov/23, Issue edited and restored its original, Medium, TestIssue, 3m, 3m, Issue restored

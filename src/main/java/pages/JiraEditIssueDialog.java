@@ -21,7 +21,7 @@ public class JiraEditIssueDialog {
     private final By attachmentBrowseButton = By.id("attachment-browse-button");
     private final By duedateField = By.id("duedate");
     private final By duedateTrigger = By.id("duedate-trigger");
-    private final By textModeButton = By.xpath("//li[@data-mode='source' and not(@class)]//button[text()='Text']");
+    private final By descriptionTextModeButton = By.xpath("(//button[text()='Text'])[1]");
     private final By descriptionDiv = By.id("description-wiki-edit");
     private final By descriptionField = By.id("description");
     private final By assigneeField = By.id("assignee-field");
@@ -30,10 +30,11 @@ public class JiraEditIssueDialog {
     private final By labelTextarea = By.id("labels-textarea");
     private final By originalEstimate = By.id("timetracking_originalestimate");
     private final By remainingEstimate = By.id("timetracking_remainingestimate");
+    private final By commentTextModeButton = By.xpath("(//button[text()='Text'])[2]");
     private final By commentDiv = By.id("comment-wiki-edit");
     private final By commentField = By.id("comment");
     private final By updateButton = By.id("edit-issue-submit");
-    private final By cancelButton = By.xpath("//button[@type='button' and @accesskey='`' and @title='Press Alt+` to cancel' and contains(@class, 'cancel')]");
+    private final By cancelButton = By.xpath("//button[text()='Cancel']");
 
     public JiraEditIssueDialog(WebDriver driver, Duration waitTimeout){
         this.wait = new WebDriverWait(driver,waitTimeout);
@@ -58,6 +59,7 @@ public class JiraEditIssueDialog {
             logger.info("Add " + summary + " into 'summary' field");
             WebElement summaryFieldElement = wait.until(ExpectedConditions.elementToBeClickable(summaryField));
             summaryFieldElement.click();
+            summaryFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             summaryFieldElement.sendKeys(summary);
             summaryFieldElement.sendKeys(Keys.RETURN);
         } catch (WebDriverException e) {
@@ -103,6 +105,7 @@ public class JiraEditIssueDialog {
         try {
             logger.info("Adding due date: " + dueDate);
             WebElement dueDateFieldElement = wait.until(ExpectedConditions.visibilityOfElementLocated(duedateField));
+            dueDateFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             dueDateFieldElement.sendKeys(dueDate);
             dueDateFieldElement.sendKeys(Keys.RETURN);
         } catch (WebDriverException e){
@@ -114,8 +117,8 @@ public class JiraEditIssueDialog {
     public JiraEditIssueDialog setTextDescriptionMode(){
         try {
             logger.info("Setting text description mode");
-            WebElement textModeButtonElement = wait.until(ExpectedConditions.elementToBeClickable(textModeButton));
-            textModeButtonElement.click();
+            WebElement descriptionTextModeButtonElement = wait.until(ExpectedConditions.elementToBeClickable(descriptionTextModeButton));
+            descriptionTextModeButtonElement.click();
         } catch (WebDriverException e){
             logger.error("Exception while setting text description mode: " + e.getMessage());
         }
@@ -126,6 +129,7 @@ public class JiraEditIssueDialog {
             logger.info("Adding description: " + description);
             WebElement descriptionDivElement = wait.until(ExpectedConditions.visibilityOfElementLocated(descriptionDiv));
             WebElement descriptionFieldElement = descriptionDivElement.findElement(descriptionField);
+            descriptionFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             descriptionFieldElement.sendKeys(description);
         } catch (WebDriverException e){
             logger.error("Exception while adding description: " + e.getMessage());
@@ -174,6 +178,7 @@ public class JiraEditIssueDialog {
         try {
             logger.info("Adding label: " + label);
             WebElement labelTextareaElement = wait.until(ExpectedConditions.visibilityOfElementLocated(labelTextarea));
+            labelTextareaElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             labelTextareaElement.sendKeys(label);
             labelTextareaElement.sendKeys(Keys.RETURN);
         } catch (WebDriverException e){
@@ -186,6 +191,7 @@ public class JiraEditIssueDialog {
         try {
             logger.info("Adding original estimate: " + time);
             WebElement originalEstimateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(originalEstimate));
+            originalEstimateElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             originalEstimateElement.sendKeys(time);
             originalEstimateElement.sendKeys(Keys.RETURN);
         } catch (WebDriverException e){
@@ -198,6 +204,7 @@ public class JiraEditIssueDialog {
         try {
             logger.info("Adding remaining estimate: " + time);
             WebElement remainingEstimateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(remainingEstimate));
+            remainingEstimateElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             remainingEstimateElement.sendKeys(time);
             remainingEstimateElement.sendKeys(Keys.RETURN);
         } catch (WebDriverException e){
@@ -209,8 +216,8 @@ public class JiraEditIssueDialog {
     public JiraEditIssueDialog setCommentTextMode(){
         try {
             logger.info("Setting comment field text mode");
-            WebElement textModeButtonElement = wait.until(ExpectedConditions.elementToBeClickable(textModeButton));
-            textModeButtonElement.click();
+            WebElement commentTextModeButtonElement = wait.until(ExpectedConditions.elementToBeClickable(commentTextModeButton));
+            commentTextModeButtonElement.click();
         } catch (WebDriverException e){
             logger.error("Exception while setting comment field text mode: " + e.getMessage());
         }
@@ -219,8 +226,9 @@ public class JiraEditIssueDialog {
     public JiraEditIssueDialog addComment(String comment){
         try {
             logger.info("Adding description: " + comment);
-            WebElement commentDivElement = wait.until(ExpectedConditions.visibilityOfElementLocated(commentDiv));
+            WebElement commentDivElement = wait.until(ExpectedConditions.presenceOfElementLocated(commentDiv));
             WebElement commentFieldElement = commentDivElement.findElement(commentField);
+            commentFieldElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
             commentFieldElement.sendKeys(comment);
         } catch (WebDriverException e){
             logger.error("Exception while adding comment: " + e.getMessage());
