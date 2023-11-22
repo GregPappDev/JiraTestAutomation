@@ -37,18 +37,7 @@ public class LoginUserTestCases {
 
     public boolean failCaptcha(String userName, String password){
         revealCaptcha(userName, password,3);
-        WebElement userNameField = driver.findElement(By.id("login-form-username"));
-        userNameField.sendKeys(userName);
-        WebElement passwordField = driver.findElement(By.id("login-form-password"));
-        passwordField.sendKeys(password);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-        WebElement captchaField = driver.findElement(By.id("login-form-captcha"));
-        captchaField.sendKeys("#######");
-
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-
+        fillInCredentialsAndCaptcha(userName, password);
         navigateToUrl();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("login-form-username"));
@@ -80,7 +69,20 @@ public class LoginUserTestCases {
             clickSubmitButton();
             counter++;
         }
+    }
 
+    private void fillInCredentialsAndCaptcha(String userName, String password){
+        WebElement userNameField = driver.findElement(By.id("login-form-username"));
+        userNameField.sendKeys(userName);
+        WebElement passwordField = driver.findElement(By.id("login-form-password"));
+        passwordField.sendKeys(password);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+        WebElement captchaField = driver.findElement(By.id("login-form-captcha"));
+        captchaField.sendKeys("#######");
+
+        WebElement loginButton = driver.findElement(By.id("login"));
+        loginButton.click();
     }
 
 }
