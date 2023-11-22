@@ -6,11 +6,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LoginTest {
     private static String userName;
     private static String password;
-
     private WebDriver driver;
+    private LoginUserTestCase loginUser;
 
     @BeforeAll
     public static void setUp(){
@@ -22,34 +23,34 @@ public class LoginTest {
     @BeforeEach
     public void init(){
         driver = new ChromeDriver();
-
+        driver.manage().window().maximize();
+        loginUser = new LoginUserTestCase(driver);
     }
 
     @Test
     @Order(1)
     @DisplayName("Login valid user successfully")
     public void LoginValidUser_SuccessfulLogin(){
-        driver.manage().window().maximize();
-        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
+
         boolean result = loginUser.loginUserTestCase(userName, password);
         assertTrue(result);
     }
 
     @Test
+    @Order(2)
     @DisplayName("Deny login with valid username and invalid password")
     public void LoginWithIncorrectPassword_LoginDenied(){
-        driver.manage().window().maximize();
-        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
+
         String incorrectPassword = "z";
         boolean result = loginUser.loginUserTestCase("userName", incorrectPassword);
         assertFalse(result);
     }
 
     @Test
+    @Order(3)
     @DisplayName("Deny login with empty credentials")
     public void LoginWithEmptyCredentials_LoginDenied(){
-        driver.manage().window().maximize();
-        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
+
         String emptyUserName = "";
         String emptyPassword = "";
         boolean result = loginUser.loginUserTestCase(emptyUserName, emptyPassword);
@@ -57,10 +58,10 @@ public class LoginTest {
     }
 
     @Test
+    @Order(4)
     @DisplayName("Reveal CAPTCHA after three failed login attempt")
     public void AfterThreeInvalidTries_CaptchaRevealed(){
-        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
-        driver.manage().window().maximize();
+
         int numberOfTries = 3;
         String correctUserName = userName;
         String invalidPassword = "x";
@@ -69,10 +70,10 @@ public class LoginTest {
         assertTrue(result);
     }
     @Test
+    @Order(5)
     @DisplayName("Fail CAPTCHA test and deny login")
     public void AfterThreeInvalidTries_FailCaptcha_LoginDenied(){
-        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
-        driver.manage().window().maximize();
+
         int numberOfTries = 3;
         String correctUserName = userName;
         String invalidPassword = "x";

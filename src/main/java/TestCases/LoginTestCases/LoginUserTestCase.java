@@ -52,7 +52,7 @@ public class LoginUserTestCase {
         loginButton.click();
 
         navigateToUrl();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        /* driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); */
         List<WebElement> result = driver.findElements(By.id("login-form-username"));
         return result.size() > 0;
     }
