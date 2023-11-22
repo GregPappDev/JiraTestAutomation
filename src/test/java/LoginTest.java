@@ -26,6 +26,7 @@ public class LoginTest {
     }
 
     @Test
+    @Order(1)
     public void LoginValidUser_SuccessfulLogin(){
         driver.manage().window().maximize();
         LoginUserTestCase loginUser = new LoginUserTestCase(driver);
