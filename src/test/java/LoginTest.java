@@ -1,5 +1,3 @@
-package LoginTests;
-
 import TestCases.LoginTestCases.LoginUserTestCase;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -46,6 +44,6 @@ public class LoginTest {
 
     @AfterEach
     public void tearDown(){
-        driver.close();
+        driver.quit();
     }
 }
