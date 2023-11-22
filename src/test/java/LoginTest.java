@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class LoginTest {
     private static String userName;
     private static String password;
-    final private String chromeDriverPath = "D:\\Codecool\\chromedriver.exe";
+
     private WebDriver driver;
 
     @BeforeAll
@@ -22,7 +22,7 @@ public class LoginTest {
     @BeforeEach
     public void init(){
         driver = new ChromeDriver();
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+
     }
 
     @Test
@@ -40,6 +40,28 @@ public class LoginTest {
         String incorrectPassword = "z";
         boolean result = loginUser.loginUserTestCase("userName", incorrectPassword);
         assertFalse(result);
+    }
+
+    @Test
+    public void LoginWithEmptyCredentials_LoginDenied(){
+        driver.manage().window().maximize();
+        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
+        String emptyUserName = "";
+        String emptyPassword = "";
+        boolean result = loginUser.loginUserTestCase(emptyUserName, emptyPassword);
+        assertFalse(result);
+    }
+
+    @Test
+    public void AfterThreeInvalidTries_CaptchaRevealed(){
+        LoginUserTestCase loginUser = new LoginUserTestCase(driver);
+        driver.manage().window().maximize();
+        int numberOfTries = 3;
+        String correctUserName = userName;
+        String invalidPassword = "x";
+
+        boolean result = loginUser.multipleLoginTriesTestCase(correctUserName, invalidPassword, numberOfTries);
+        assertTrue(result);
     }
 
     @AfterEach
