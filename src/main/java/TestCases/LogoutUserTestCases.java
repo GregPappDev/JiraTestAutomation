@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+
 
 public class LogoutUserTestCases extends LoginUserTestCases{
 
@@ -18,7 +18,7 @@ public class LogoutUserTestCases extends LoginUserTestCases{
     public boolean logoutUserTestCase(String userName, String password){
         login(userName, password);
         logout(driver);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         return driver.findElement(By.tagName("h1")).getText().equals(logoutText);
     }
 
@@ -27,12 +27,12 @@ public class LogoutUserTestCases extends LoginUserTestCases{
         fillInUserName(userName);
         fillInPassword(password);
         clickSubmitButton();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
     private void logout(WebDriver driver){
         mainPage.getAvatarClassName(driver).click();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         mainPage.getLogoutOptionId(driver).click();
     }
 }

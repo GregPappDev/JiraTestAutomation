@@ -5,10 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-
 
 public class LoginUserTestCases {
     final private LoginPage loginPage = new LoginPage();
@@ -24,26 +22,26 @@ public class LoginUserTestCases {
         fillInUserName(userName);
         fillInPassword(password);
         clickSubmitButton();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("header-details-user-fullname"));
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     public boolean revealCaptcha(String userName, String password, int numberOfTries){
 
         multipleLoginTries(userName, password, numberOfTries);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("captchalabel"));
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     public boolean failCaptcha(String userName, String password){
-
+        revealCaptcha(userName, password,3);
         WebElement userNameField = driver.findElement(By.id("login-form-username"));
         userNameField.sendKeys(userName);
         WebElement passwordField = driver.findElement(By.id("login-form-password"));
         passwordField.sendKeys(password);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
         WebElement captchaField = driver.findElement(By.id("login-form-captcha"));
         captchaField.sendKeys("#######");
@@ -52,9 +50,9 @@ public class LoginUserTestCases {
         loginButton.click();
 
         navigateToUrl();
-        /* driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); */
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("login-form-username"));
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     protected void navigateToUrl(){
