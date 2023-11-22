@@ -10,12 +10,12 @@ import java.util.concurrent.TimeUnit;
 
 
 
-public class LoginUserTestCase {
+public class LoginUserTestCases {
     final private LoginPage loginPage = new LoginPage();
     protected WebDriver driver;
 
 
-    public LoginUserTestCase(WebDriver driver) {
+    public LoginUserTestCases(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -57,18 +57,18 @@ public class LoginUserTestCase {
         return result.size() > 0;
     }
 
-    private void navigateToUrl(){
+    protected void navigateToUrl(){
         driver.get(loginPage.getUrl());
     }
-    private void fillInUserName(String userName){
+    protected void fillInUserName(String userName){
         driver.findElement(loginPage.getUserNameInputField())
                 .sendKeys(userName);
     }
-    private void fillInPassword(String password){
+    protected void fillInPassword(String password){
         driver.findElement(loginPage.getPasswordInputField())
                 .sendKeys(password);
     }
-    private void clickSubmitButton(){
+    protected void clickSubmitButton(){
         driver.findElement(loginPage.getLoginButton()).click();
     }
 
