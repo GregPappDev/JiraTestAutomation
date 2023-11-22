@@ -27,17 +27,15 @@ public class LogoutUserTestCases extends LoginUserTestCases{
         clickSubmitButton();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
-        WebElement avatar = mainPage.getAvatarId(driver);
-        wait.until(d -> avatar.isDisplayed());
+        WebElement avatar = driver.findElement(By.className("aui-avatar-inner"));
+        //wait.until(d -> avatar.isDisplayed());
         avatar.click();
-
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement logoutOption = mainPage.getLogoutOptionId(driver);
-        wait.until(driver -> logoutOption.isDisplayed());
+        //wait.until(driver -> logoutOption.isDisplayed());
         logoutOption.click();
 
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
-        navigateToUrl();
 
         return driver.findElement(By.tagName("h1")).getText().equals(logoutText);
 
