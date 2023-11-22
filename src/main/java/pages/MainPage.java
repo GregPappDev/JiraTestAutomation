@@ -9,7 +9,7 @@ public class MainPage {
     final private String logoutOptionId = "log_out";
 
 
-    public WebElement getAvatarId(WebDriver driver) {
+    public WebElement getAvatarClassName(WebDriver driver) {
         return driver.findElement(By.className(avatarClassName));
     }
 
@@ -18,3 +18,4 @@ public class MainPage {
     }
 
 }
+

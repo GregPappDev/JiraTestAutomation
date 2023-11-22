@@ -1,5 +1,4 @@
-import TestCases.LoginTestCases.LoginUserTestCases;
-import TestCases.LoginTestCases.LogoutUserTestCases;
+import TestCases.LogoutUserTestCases;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

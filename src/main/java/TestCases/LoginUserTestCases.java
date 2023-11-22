@@ -1,4 +1,4 @@
-package TestCases.LoginTestCases;
+package TestCases;
 
 import pages.LoginPage;
 import org.openqa.selenium.By;
