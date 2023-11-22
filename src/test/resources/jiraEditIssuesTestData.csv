@@ -1,0 +1,3 @@
+summary,issueType,dueDate,description,priority,label,originalEstimate,remainingEstimate,comment
+(edited),Story, 23/Nov/23, Edit test description, Lowest, UpdateTest, 1m, 1m, Automated update test 1
+(edited again),Bug, 23/Nov/23, Edit test description, Low, UpdateTest, 2m, 2m, Automated update test 2
