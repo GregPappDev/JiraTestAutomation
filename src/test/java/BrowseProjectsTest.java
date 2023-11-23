@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.opentest4j.AssertionFailedError;
 import pages.BrowseProjects;
 import pages.JiraLoginPage;
 import pages.JiraMainPage;
@@ -44,12 +45,20 @@ public class BrowseProjectsTest {
     public void browseProjects(String projectName) {
         Duration waitTimeout = Duration.ofSeconds(5);
         BrowseProjects browseProjects= new BrowseProjects(driver, waitTimeout);
-        browseProjects.findProject(projectName);
+        try {
+            boolean projectFound = browseProjects.findProject(projectName);
+            Assertions.assertTrue(projectFound, "Project not found for the search: " + projectName);
+        } catch (AssertionFailedError e) {
+            logger.error("AssertionFailedError occurred while browsing projects: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            logger.error("Exception occurred while browsing projects: " + e.getMessage());
+            Assertions.fail("Exception occurred while browsing projects: " + e.getMessage());
+        }
     }
 
     @AfterEach
     public void tearDown() {
-        logger.info("Web driver now closing");
         WebDriverSetup.closeDriver();
         logger.info("Web driver closed");
     }
