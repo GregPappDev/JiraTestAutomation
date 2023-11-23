@@ -1,21 +1,19 @@
-package TestCases.LoginTestCases;
+package TestCases;
 
 import pages.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-
-
-public class LoginUserTestCase {
+public class LoginUserTestCases {
     final private LoginPage loginPage = new LoginPage();
     protected WebDriver driver;
 
 
-    public LoginUserTestCase(WebDriver driver) {
+    public LoginUserTestCases(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -24,51 +22,40 @@ public class LoginUserTestCase {
         fillInUserName(userName);
         fillInPassword(password);
         clickSubmitButton();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("header-details-user-fullname"));
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     public boolean revealCaptcha(String userName, String password, int numberOfTries){
 
         multipleLoginTries(userName, password, numberOfTries);
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("captchalabel"));
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
     public boolean failCaptcha(String userName, String password){
-
-        WebElement userNameField = driver.findElement(By.id("login-form-username"));
-        userNameField.sendKeys(userName);
-        WebElement passwordField = driver.findElement(By.id("login-form-password"));
-        passwordField.sendKeys(password);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
-        WebElement captchaField = driver.findElement(By.id("login-form-captcha"));
-        captchaField.sendKeys("#######");
-
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-
+        revealCaptcha(userName, password,3);
+        fillInCredentialsAndCaptcha(userName, password);
         navigateToUrl();
-        /* driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); */
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         List<WebElement> result = driver.findElements(By.id("login-form-username"));
-        return result.size() > 0;
+        return !result.isEmpty();
     }
 
-    private void navigateToUrl(){
+    protected void navigateToUrl(){
         driver.get(loginPage.getUrl());
     }
-    private void fillInUserName(String userName){
+    protected void fillInUserName(String userName){
         driver.findElement(loginPage.getUserNameInputField())
                 .sendKeys(userName);
     }
-    private void fillInPassword(String password){
+    protected void fillInPassword(String password){
         driver.findElement(loginPage.getPasswordInputField())
                 .sendKeys(password);
     }
-    private void clickSubmitButton(){
+    protected void clickSubmitButton(){
         driver.findElement(loginPage.getLoginButton()).click();
     }
 
@@ -82,7 +69,20 @@ public class LoginUserTestCase {
             clickSubmitButton();
             counter++;
         }
+    }
 
+    private void fillInCredentialsAndCaptcha(String userName, String password){
+        WebElement userNameField = driver.findElement(By.id("login-form-username"));
+        userNameField.sendKeys(userName);
+        WebElement passwordField = driver.findElement(By.id("login-form-password"));
+        passwordField.sendKeys(password);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+        WebElement captchaField = driver.findElement(By.id("login-form-captcha"));
+        captchaField.sendKeys("#######");
+
+        WebElement loginButton = driver.findElement(By.id("login"));
+        loginButton.click();
     }
 
 }

@@ -1,4 +1,4 @@
-import TestCases.LoginTestCases.LoginUserTestCase;
+import TestCases.LoginUserTestCases;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,7 +11,7 @@ public class LoginTest {
     private static String userName;
     private static String password;
     private WebDriver driver;
-    private LoginUserTestCase loginUser;
+    private LoginUserTestCases loginUser;
 
     @BeforeAll
     public static void setUp(){
@@ -24,7 +24,7 @@ public class LoginTest {
     public void init(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        loginUser = new LoginUserTestCase(driver);
+        loginUser = new LoginUserTestCases(driver);
     }
 
     @Test
