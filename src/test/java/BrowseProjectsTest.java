@@ -1,8 +1,11 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.opentest4j.AssertionFailedError;
 import pages.BrowseProjects;
 import pages.JiraLoginPage;
 import pages.JiraMainPage;
@@ -18,7 +21,6 @@ public class BrowseProjectsTest {
     private static JiraLoginPage loginPage;
     private static JiraMainPage mainPage;
     private static Logger logger = LogManager.getLogger(BrowseProjectsTest.class);
-    private static BrowseProjects BrowseProjects;
 
     @BeforeAll
     public static void setUp() {
@@ -38,18 +40,31 @@ public class BrowseProjectsTest {
         loginPage.clickLoginButton();
     }
 
-    @Test
-    public void browseProjects() {
+    @ParameterizedTest
+    @CsvFileSource(resources = "projects.csv", numLinesToSkip = 1)
+    public void browseProjects(String projectName) {
         Duration waitTimeout = Duration.ofSeconds(5);
         BrowseProjects browseProjects= new BrowseProjects(driver, waitTimeout);
-        browseProjects.findProject("Main");
-//        tearDown();
+        try {
+            boolean projectFound = browseProjects.findProject(projectName);
+            Assertions.assertTrue(projectFound, "Project not found for the search: " + projectName);
+        } catch (AssertionFailedError e) {
+            logger.error("AssertionFailedError occurred while browsing projects: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            logger.error("Exception occurred while browsing projects: " + e.getMessage());
+            Assertions.fail("Exception occurred while browsing projects: " + e.getMessage());
+        }
     }
 
-@AfterAll
-    public static void tearDown() {
-        logger.info("Web driver now closing");
+    @AfterEach
+    public void tearDown() {
         WebDriverSetup.closeDriver();
         logger.info("Web driver closed");
+    }
+
+    @AfterAll
+    public static void quit() {
+        driver.quit();
     }
 }

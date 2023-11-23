@@ -1,15 +1,12 @@
 package pages;
 
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.WebDriverException;
 
 import java.time.Duration;
 
@@ -29,6 +26,9 @@ public class BrowseProjects {
     @FindBy(xpath = "//*[@id=\"project-filter-text\"]")
     private WebElement searchProjectsField;
 
+    @FindBy(id = "projects")
+    private WebElement projectElements;
+
     public BrowseProjects(WebDriver driver, Duration waitTimeout) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, waitTimeout);
@@ -42,8 +42,6 @@ public class BrowseProjects {
         } catch (WebDriverException e) {
             logger.error("Exception while clicking browseProjectLinks: \n" + e.getMessage());
         }
-//        wait.until(ExpectedConditions.visibilityOf(browseProjectLinks));
-//        browseProjectLinks.click();
     }
 
     private void clickAllProjectsLink() {
@@ -58,27 +56,31 @@ public class BrowseProjects {
         }
     }
 
-    private void enterSearchedProject(String searchedProject) {
+    private boolean enterSearchedProject(String searchedProject) throws InterruptedException {
         try {
-            logger.info("Waiting for searchProjectsField to be clickable");
+            wait.until(ExpectedConditions.elementToBeClickable(searchProjectsField));
             wait.until(ExpectedConditions.elementToBeClickable(searchProjectsField));
 
-            logger.info("Clicking on searchProjectsField");
-            searchProjectsField.click();
-
-            logger.info("Typing into searchProjectsField");
+            logger.info("Typing into searchProjectsField: " + searchedProject);
             searchProjectsField.sendKeys(searchedProject);
-        } catch (TimeoutException e) {
-            logger.error("Timeout while waiting for searchProjectsField to be clickable: \n"+e.getMessage());
+            Thread.sleep(1000);
+            String projectsText = projectElements.getText();
+
+            if (projectsText.contains("No projects were found")) {
+                logger.warn("No projects were found for the search: " + searchedProject);
+            }
+            return !projectsText.contains("No projects were found");
+
+        } catch (TimeoutException | InterruptedException e) {
+            logger.error("Timeout while waiting for searchProjectsField to be clickable: \n" + e.getMessage());
+            throw e;
         }
-//        searchProjectsField.click();
-//        searchProjectsField.sendKeys(searchedProject);
     }
 
-    public void findProject(String searchedProject) {
+    public boolean findProject(String searchedProject) throws InterruptedException {
         clickBrowseProjectsLink();
         clickAllProjectsLink();
-        enterSearchedProject(searchedProject);
+        return enterSearchedProject(searchedProject);
     }
 
 }
