@@ -23,6 +23,7 @@ public class JiraEditIssueTest {
     private static final Duration waitTimeout = Duration.ofSeconds(5);
     private static final Logger logger = LogManager.getLogger(JiraEditIssueTest.class);
     private static JiraMainPage mainPage;
+    private static JiraBrowsePage browsePage;
     private static JiraEditIssueDialog editIssueDialog;
 
     @BeforeAll
@@ -30,26 +31,23 @@ public class JiraEditIssueTest {
     public static void setUp(){
         Properties testProperties = PropertyLoader.loadProperties();
         driver = WebDriverSetup.getDriver();
-        driver.get(testProperties.getProperty("URL"));
+        driver.get(testProperties.getProperty("EDIT_ISSUE_URL"));
 
         logger.info("Setting up the test with wait timeout: " + waitTimeout.getSeconds() + " seconds");
 
         LoginHandler loginHandler = new LoginHandler(driver, testProperties);
         loginHandler.performLogin();
 
-        mainPage = new JiraMainPage(driver, waitTimeout);
-        mainPage.clickIssuesDropdown();
-        mainPage.clickSearchForIssuesLink();
 
-        JiraBrowsePage browsePage = new JiraBrowsePage(driver, waitTimeout);
-        browsePage
-                .searchIssuesBy("JETI")
-                .clickEditIssueButton();
     }
 
     @BeforeEach
     public void beforeEach(){
+        browsePage = new JiraBrowsePage(driver, waitTimeout);
+        mainPage = new JiraMainPage(driver, waitTimeout);
         editIssueDialog = new JiraEditIssueDialog(driver, waitTimeout);
+
+        browsePage.clickEditIssueButton();
     }
 
     @ParameterizedTest
@@ -64,11 +62,13 @@ public class JiraEditIssueTest {
                 .addSummary(summary)
                 .selectIssueType(issueType)
                 .addDueDate(dueDate)
+                .setTextDescriptionMode()
                 .addDescription(description)
                 .selectPriority(priority)
                 .addLabel(label)
                 .addOriginalEstimate(originalEstimate)
                 .addRemainingEstimate(remainingEstimate)
+                .setCommentTextMode()
                 .addComment(comment)
                 .clickUpdateIssueButton();
 

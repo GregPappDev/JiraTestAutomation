@@ -22,7 +22,7 @@ public class JiraCreateIssueDialog {
     private final By attachmentBrowseButton = By.id("attachment-browse-button");
     private final By duedateField = By.id("duedate");
     private final By duedateTrigger = By.id("duedate-trigger");
-    private final By textModeButton = By.xpath("//li[@data-mode='source' and not(@class)]//button[text()='Text']");
+    private final By textModeButton = By.xpath("//button[text()='Text']");
     private final By descriptionDiv = By.id("description-wiki-edit");
     private final By descriptionField = By.id("description");
     private final By assigneeField = By.id("assignee-field");
@@ -33,7 +33,7 @@ public class JiraCreateIssueDialog {
     private final By remainingEstimate = By.id("timetracking_remainingestimate");
     private final By checkboxForCreateAnother = By.id("qf-create-another");
     private final By createButton = By.id("create-issue-submit");
-    private final By cancelButton = By.xpath("//button[@type='button' and @accesskey='`' and @title='Press Alt+` to cancel' and contains(@class, 'cancel')]");
+    private final By cancelButton = By.xpath("//button[text()='Cancel']");
 
 
     public JiraCreateIssueDialog(WebDriver driver, Duration waitTimeout) {

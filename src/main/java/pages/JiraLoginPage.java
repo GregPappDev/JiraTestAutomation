@@ -8,7 +8,7 @@ public class JiraLoginPage {
 
     private By usernameField = By.id("login-form-username");
     private By passwordField = By.id("login-form-password");
-    private By loginButton = By.id("login");
+    private By loginButton = By.xpath("//input[@value='Log In']");
 
     public JiraLoginPage(WebDriver driver) {
         this.driver = driver;
